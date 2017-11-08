@@ -12,6 +12,7 @@ class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var subjects = ["Mathematics", "Marvel Super Heroes", "Science"]
+    var subtitles = ["1+1?", "Ironman, Captain America", "Chem,Bio,etc."]
 
 
     override func viewDidLoad() {
@@ -72,8 +73,10 @@ class MasterViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         let object = subjects[indexPath.row]
+        let subtitle = subtitles[indexPath.row]
         cell.imageView?.image = UIImage(named: subjects[indexPath.row] )
         cell.textLabel!.text = object
+        cell.detailTextLabel?.text = subtitle
         return cell
     }
 
