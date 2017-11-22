@@ -7,22 +7,30 @@
 //
 
 import UIKit
-
-class MasterViewController: UITableViewController {
-
+class MasterViewController : UITableViewController{
+    
+    
+    
+    struct Quiz: Decodable {
+        let title: String
+        let desc: String
+        let questions: [Questions]
+    }
+    struct Questions: Decodable {
+        let text: String
+        let answer: String
+        let answers: Array<String>
+    }
     var detailViewController: DetailViewController? = nil
-    var subjects = ["Mathematics", "Marvel Super Heroes", "Science"]
-    var subtitles = [
-        "Mathematics" : "1+1?",
-        "Marvel Super Heroes" : "Ironman, Captain America",
-        "Science" : "Chem,Bio,etc."]
+    var jsonData : [Quiz] = []
+    var subjects : [String] = []
+    var subtitles : [String] = []
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadData()
         // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.leftBarButtonItem = editButtonItem
-
         let settingsButton = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(settings(_:)))
         navigationItem.rightBarButtonItem = settingsButton
         if let split = splitViewController {
@@ -43,7 +51,8 @@ class MasterViewController: UITableViewController {
 
     @objc
     func settings(_ sender: Any) {
-        let alert = UIAlertController(title: "Settings", message: "Settings go here", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Settings", message: "Refresh your quizes?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Refresh", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.loadData()}))
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
@@ -53,10 +62,19 @@ class MasterViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = subjects[indexPath.row]
+                let object = jsonData[indexPath.row]
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+                var quiz : [Dictionary<String,Any>] = []
+                for x in object.questions {
+                    var element : Dictionary<String,Any> = [:]
+                    element["text"] = x.text
+                    element["answers"] = x.answers
+                    element["answer"] = x.answer
+                    quiz.append(element)
+                }
+                controller.questions = quiz
+                controller.totalNumberOfQuestions = object.questions.count
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
         }
@@ -76,7 +94,7 @@ class MasterViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         let object = subjects[indexPath.row]
-        let subtitle = subtitles[object]
+        let subtitle = subtitles[indexPath.row]
         cell.imageView?.image = UIImage(named: subjects[indexPath.row] )
         cell.textLabel!.text = object
         cell.detailTextLabel?.text = subtitle
@@ -96,7 +114,36 @@ class MasterViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
+    
 
 
+    
+    func loadData(){
+        let url = URL(string: "http://tednewardsandbox.site44.com/que")
+            //fetching the data from the url
+            URLSession.shared.dataTask(with: url!) {(data, response, error) in
+                let httpResponse = response as? HTTPURLResponse
+                if (httpResponse != nil && (httpResponse?.statusCode)! >= 200 && (httpResponse?.statusCode)! < 300) {
+                    self.decode(data: data!)
+                }
+            }.resume()
+        if url == nil {
+            let path = Bundle.main.path(forResource: "quizes", ofType: "json")
+            let localData = try? Data(contentsOf: URL(fileURLWithPath: path!))
+            self.decode(data: localData!)
+        }
+        
+    }
+    
+    func decode(data: Data){
+        if let jsonObj = try? JSONDecoder().decode([Quiz].self, from: data) {
+            for n in jsonObj {
+                self.subjects.append(n.title)
+                self.subtitles.append(n.desc)
+                
+            }
+            self.jsonData = jsonObj
+        }
+    }
 }
 
