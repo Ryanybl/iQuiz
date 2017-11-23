@@ -7,7 +7,7 @@
 //
 
 import UIKit
-class MasterViewController : UITableViewController{
+class MasterViewController : UITableViewController, UIPopoverPresentationControllerDelegate{
     
     
     
@@ -31,8 +31,7 @@ class MasterViewController : UITableViewController{
         super.viewDidLoad()
         loadData()
         // Do any additional setup after loading the view, typically from a nib.
-        let settingsButton = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(settings(_:)))
-        navigationItem.rightBarButtonItem = settingsButton
+
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
@@ -49,16 +48,15 @@ class MasterViewController : UITableViewController{
         // Dispose of any resources that can be recreated.
     }
 
-    @objc
-    func settings(_ sender: Any) {
-        let alert = UIAlertController(title: "Settings", message: "Refresh your quizes?", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Refresh", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.loadData()}))
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-
     // MARK: - Segues
-
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+    
+    
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
@@ -77,6 +75,10 @@ class MasterViewController : UITableViewController{
                 controller.totalNumberOfQuestions = object.questions.count
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
+        }else if segue.identifier == "settingsPopover" {
+            let popoverViewController = segue.destination as! UIViewController
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+            popoverViewController.popoverPresentationController!.delegate = self as! UIPopoverPresentationControllerDelegate
         }
     }
 
@@ -119,19 +121,23 @@ class MasterViewController : UITableViewController{
 
     
     func loadData(){
-        let url = URL(string: "http://tednewardsandbox.site44.com/que")
+        let url = URL(string: "http://tednewardsandbox.site44.com/questions.json")
             //fetching the data from the url
             URLSession.shared.dataTask(with: url!) {(data, response, error) in
                 let httpResponse = response as? HTTPURLResponse
                 if (httpResponse != nil && (httpResponse?.statusCode)! >= 200 && (httpResponse?.statusCode)! < 300) {
                     self.decode(data: data!)
                 }
+                else {
+                    let path = Bundle.main.path(forResource: "quizes", ofType: "json")
+                    let localData = try? Data(contentsOf: URL(fileURLWithPath: path!))
+                    self.decode(data: localData!)
+                }
+                DispatchQueue.main.sync {
+                    self.tableView.reloadData()
+                }
             }.resume()
-        if url == nil {
-            let path = Bundle.main.path(forResource: "quizes", ofType: "json")
-            let localData = try? Data(contentsOf: URL(fileURLWithPath: path!))
-            self.decode(data: localData!)
-        }
+
         
     }
     
