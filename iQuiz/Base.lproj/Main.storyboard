@@ -227,6 +227,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Refresh"/>
+                                <connections>
+                                    <segue destination="7bK-jq-Zjz" kind="show" identifier="showMaster" id="k0i-bf-W5k"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -381,7 +384,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="6S0-TO-JiA"/>
-        <segue reference="4AO-Zz-xvz"/>
+        <segue reference="k0i-bf-W5k"/>
         <segue reference="GKi-kA-LjT"/>
     </inferredMetricsTieBreakers>
 </document>

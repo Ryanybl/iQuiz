@@ -39,7 +39,7 @@ class MasterViewController : UITableViewController, UIPopoverPresentationControl
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
+        //clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
     }
 
@@ -76,9 +76,9 @@ class MasterViewController : UITableViewController, UIPopoverPresentationControl
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
         }else if segue.identifier == "settingsPopover" {
-            let popoverViewController = segue.destination as! UIViewController
+            let popoverViewController = segue.destination
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-            popoverViewController.popoverPresentationController!.delegate = self as! UIPopoverPresentationControllerDelegate
+            popoverViewController.popoverPresentationController!.delegate = self as UIPopoverPresentationControllerDelegate
         }
     }
 
@@ -108,6 +108,7 @@ class MasterViewController : UITableViewController, UIPopoverPresentationControl
         return true
     }
 
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             subjects.remove(at: indexPath.row)
@@ -121,6 +122,7 @@ class MasterViewController : UITableViewController, UIPopoverPresentationControl
 
     
     func loadData(){
+        NSLog("loading")
         let url = URL(string: "http://tednewardsandbox.site44.com/questions.json")
             //fetching the data from the url
             URLSession.shared.dataTask(with: url!) {(data, response, error) in

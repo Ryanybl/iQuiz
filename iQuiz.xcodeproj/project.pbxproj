@@ -19,7 +19,7 @@
 		5A3AAF511FBB0E3700A5E7E9 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3AAF501FBB0E3700A5E7E9 /* ResultsViewController.swift */; };
 		5A9D1FD41FC5075900E94FCF /* Quizstructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9D1FD31FC5075900E94FCF /* Quizstructs.swift */; };
 		5A9D1FD61FC54A6300E94FCF /* quizes.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A9D1FD51FC54A6300E94FCF /* quizes.json */; };
-		5A9D1FDC1FC6A58800E94FCF /* SettingsPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9D1FDB1FC6A58800E94FCF /* SettingsPopoverViewController.swift */; };
+		5A9D1FDE1FC6A91B00E94FCF /* SettingsPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9D1FDD1FC6A91B00E94FCF /* SettingsPopoverViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +58,7 @@
 		5A3AAF501FBB0E3700A5E7E9 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		5A9D1FD31FC5075900E94FCF /* Quizstructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quizstructs.swift; sourceTree = "<group>"; };
 		5A9D1FD51FC54A6300E94FCF /* quizes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = quizes.json; sourceTree = "<group>"; };
-		5A9D1FDB1FC6A58800E94FCF /* SettingsPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPopoverViewController.swift; sourceTree = "<group>"; };
+		5A9D1FDD1FC6A91B00E94FCF /* SettingsPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPopoverViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +120,7 @@
 				5A3AAF2A1FB28B3C00A5E7E9 /* Info.plist */,
 				5A9D1FD31FC5075900E94FCF /* Quizstructs.swift */,
 				5A9D1FD51FC54A6300E94FCF /* quizes.json */,
-				5A9D1FDB1FC6A58800E94FCF /* SettingsPopoverViewController.swift */,
+				5A9D1FDD1FC6A91B00E94FCF /* SettingsPopoverViewController.swift */,
 			);
 			path = iQuiz;
 			sourceTree = "<group>";
@@ -278,7 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A9D1FDC1FC6A58800E94FCF /* SettingsPopoverViewController.swift in Sources */,
+				5A9D1FDE1FC6A91B00E94FCF /* SettingsPopoverViewController.swift in Sources */,
 				5A3AAF4F1FBAEB3400A5E7E9 /* AnswersViewController.swift in Sources */,
 				5A3AAF211FB28B3C00A5E7E9 /* DetailViewController.swift in Sources */,
 				5A3AAF1F1FB28B3C00A5E7E9 /* MasterViewController.swift in Sources */,

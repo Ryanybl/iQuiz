@@ -8,6 +8,6 @@
 
 import UIKit
 
-class SettingsPopoverViewController: UIViewController, UIPopoverControllerDelegate {
-
+class SettingsPopoverViewController: UIViewController {
+    
 }
