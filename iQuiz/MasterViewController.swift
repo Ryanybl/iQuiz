@@ -25,10 +25,18 @@ class MasterViewController : UITableViewController, UIPopoverPresentationControl
     var jsonData : [Quiz] = []
     var subjects : [String] = []
     var subtitles : [String] = []
-
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl){
+        loadData()
+        self.tableView.reloadData()
+        refreshControl.endRefreshing()
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
         loadData()
         // Do any additional setup after loading the view, typically from a nib.
 
@@ -122,7 +130,9 @@ class MasterViewController : UITableViewController, UIPopoverPresentationControl
 
     
     func loadData(){
-        NSLog("loading")
+        jsonData = []
+        subjects = []
+        subtitles = []
         let url = URL(string: "http://tednewardsandbox.site44.com/questions.json")
             //fetching the data from the url
             URLSession.shared.dataTask(with: url!) {(data, response, error) in
